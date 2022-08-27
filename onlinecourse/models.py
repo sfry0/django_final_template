@@ -102,9 +102,9 @@ class Enrollment(models.Model):
     # Has question content
     # Other fields and methods you would like to design
 class Question(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    text = models.CharField(max_length=550, default="Question text here")
-    grade = models.FloatField(default=5.0)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,default="")
+    question_text = models.CharField(null=True,max_length=200)
+    question_grade = models.IntegerField(default=1)
 
     def is_get_score(self, selected_ids):
         all_answers = self.choice_set.filter(is_correct=True).count()
@@ -115,15 +115,15 @@ class Question(models.Model):
             return False
 
     def __str__(self):
-        return self.text
+        return self.question_text
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.CharField(max_length=550, default="Choice text here")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, default="")
+    choice_text = models.CharField(null=True, max_length=200)
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.text
+        return self.choice_text
 
 
 class Submission(models.Model):
